@@ -115,14 +115,20 @@ with col2:
 
 # Predicción
 if predict_btn:
-    if canvas_result.image_data is not None:
-        if np.max(canvas_result.image_data) == 0:
+    # Leer de forma segura la imagen del canvas (evita RuntimeError si aún no hay dibujo)
+    try:
+        _img = canvas_result.image_data
+    except Exception:
+        _img = None
+
+    if _img is not None:
+        if np.max(_img) == 0:
             st.warning("⚠️ Por favor, dibuja un dígito primero")
         else:
             with st.spinner("🤔 Analizando..."):
                 # Procesar imagen
                 image = Image.fromarray(
-                    canvas_result.image_data.astype("uint8")
+                    _img.astype("uint8")
                 ).convert("L")
                 
                 image_resized = image.resize((28, 28), Image.Resampling.LANCZOS)
@@ -152,7 +158,7 @@ if predict_btn:
             
             with col_img1:
                 st.write("**Tu dibujo original:**")
-                st.image(canvas_result.image_data, width=200)
+                st.image(_img, width=200)
             
             with col_img2:
                 st.write("**Imagen procesada (28x28):**")
