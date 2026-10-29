@@ -6,19 +6,54 @@ from PIL import Image
 from streamlit_drawable_canvas import st_canvas
 import os
 
+try:
+    _icon = Image.open('logo_mr.png')
+except Exception:
+    _icon = "✍️"
 st.set_page_config(
-    page_title="Detector de Dígitos MNIST",
-    page_icon="✍️",
+    page_title="Detector de Dígitos · Miguel Ruiz",
+    page_icon=_icon,
     layout="wide"
+)
+
+# ---- Estilo personalizado: paleta azul petróleo + terracota (Miguel Ruiz) ----
+st.markdown(
+    """
+    <style>
+    @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@500;700&family=Inter:wght@300;400;600&display=swap');
+    .stApp {
+        background: linear-gradient(135deg, #1b3a4b 0%, #14303d 100%);
+        color: #e8eef0;
+        font-family: 'Inter', sans-serif;
+    }
+    [data-testid="stHeader"] { background: transparent !important; }
+    [data-testid="stToolbar"] { right: 1rem; }
+    .stApp, .stApp p, .stApp li, .stApp span, .stApp label,
+    .stMarkdown, [data-testid="stCaptionContainer"],
+    [data-testid="stWidgetLabel"], [data-testid="stWidgetLabel"] * {
+        color: #e8eef0 !important;
+    }
+    h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif !important; color: #e07a5f !important; }
+    [data-testid="stMetricValue"], [data-testid="stMetricLabel"] { color: #f2cc8f !important; }
+    section[data-testid="stSidebar"] { background: #12272f; }
+    section[data-testid="stSidebar"] * { color: #e8eef0 !important; }
+    .stButton>button {
+        background-color: #e07a5f; color: #fff !important; border-radius: 10px; border: none; font-weight: 600;
+    }
+    .stButton>button:hover { background-color: #c9583c; color: #fff !important; }
+    </style>
+    """,
+    unsafe_allow_html=True,
 )
 
 # Mostrar versión en sidebar
 with st.sidebar:
+    st.markdown("<h2 style=\"font-family:'Montserrat',sans-serif; color:#f2cc8f;\">Miguel Ruiz</h2>", unsafe_allow_html=True)
     st.write(f"**TensorFlow:** {tf.__version__}")
     st.write(f"**Keras:** {keras.__version__}")
 
 st.title("✍️ Detección de Dígitos Escritos a Mano")
-st.markdown("**Modelo CNN entrenado en Google Colab con MNIST**")
+st.markdown("**Modelo CNN entrenado con MNIST** · por Miguel Ruiz")
 
 # Cargar modelo
 @st.cache_resource
